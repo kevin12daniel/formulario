@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Registro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #2ec4b6;
+            --danger-color: #e63946;
+            --border-radius: 8px;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ced4da;
+            border-radius: var(--border-radius);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -10px;
+            margin-left: -10px;
+        }
+
+        .form-col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 250px;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            color: white;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            color: var(--dark-color);
+            background-color: #e9ecef;
+            border-color: #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ced4da;
+            border-color: #ced4da;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid transparent;
+        }
+
+        .alert-success {
+            color: #0f5132;
+            background-color: #d1e7dd;
+            border-color: #badbcc;
+        }
+
+        .alert-danger {
+            color: #842029;
+            background-color: #f8d7da;
+            border-color: #f5c2c7;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-links li {
+                margin: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            .form-col {
+                flex: 0 0 100%;
+                margin-bottom: 1rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Estilos adicionales para mejorar la apariencia */
+        .required:after {
+            content: " *";
+            color: var(--danger-color);
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 5px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .password-strength-meter {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .weak {
+            width: 33%;
+            background-color: var(--danger-color);
+        }
+
+        .medium {
+            width: 66%;
+            background-color: #ffc107;
+        }
+
+        .strong {
+            width: 100%;
+            background-color: var(--success-color);
+        }
+
+        .hide-show-password {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .profile-picture-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border: 3px solid var(--primary-color);
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-picture-default {
+            font-size: 3rem;
+            color: #adb5bd;
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">MiSistema</a>
+            <ul class="nav-links">
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Servicios</a></li>
+                <li><a href="#">Acerca de</a></li>
+                <li><a href="#">Contacto</a></li>
+                <li><a href="#">Iniciar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <!-- Mensaje de alerta (oculto por defecto) -->
+        <div id="alertMessage" style="display:none;"></div>
+
+        <!-- Formulario de registro -->
+        <div class="card">
+            <div class="card-header">
+                Registro de Nuevo Usuario
+            </div>
+            <div class="card-body">
+                <form id="registrationForm">
+                    <!-- Sección de foto de perfil -->
+                    <div class="profile-picture-upload">
+                        <div class="profile-picture">
+                            <div class="profile-picture-default">👤</div>
+                            <img id="previewImage" style="display:none;" alt="Foto de perfil">
+                        </div>
+                        <div class="file-upload">
+                            <button type="button" class="btn btn-secondary">Seleccionar Imagen</button>
+                            <input type="file" id="profilePicture" accept="image/*" onchange="previewProfilePicture(this)">
+                        </div>
+                    </div>
+
+                    <!-- Información personal -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="firstName" class="required">Nombre</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="Ingrese su nombre" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="lastName" class="required">Apellido</label>
+                                <input type="text" class="form-control" id="lastName" placeholder="Ingrese su apellido" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="email" class="required">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="phone">Teléfono</label>
+                                <input type="tel" class="form-control" id="phone" placeholder="Ingrese su número de teléfono">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="birthdate">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="birthdate">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="gender">Género</label>
+                                <select class="form-control" id="gender">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="male">Masculino</option>
+                                    <option value="female">Femenino</option>
+                                    <option value="other">Otro</option>
+                                    <option value="prefer_not_to_say">Prefiero no decirlo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de la cuenta -->
+                    <div class="form-group">
+                        <label for="username" class="required">Nombre de Usuario</label>
+                        <input type="text" class="form-control" id="username" placeholder="Escoja un nombre de usuario" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="password" class="required">Contraseña</label>
+                                <div class="hide-show-password">
+                                    <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required onkeyup="checkPasswordStrength()">
+                                    <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+                                </div>
+                                <div class="password-strength">
+                                    <div class="password-strength-meter" id="passwordStrength"></div>
+                                </div>
+                                <small id="passwordHelp" class="form-text text-muted">La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, un número y un carácter especial.</small>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="confirmPassword" class="required">Confirmar Contraseña</label>
+                                <div class="hide-show-password">
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirme su contraseña" required>
+                                    <span class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="form-group">
+                        <label for="address">Dirección</label>
+                        <input type="text" class="form-control" id="address" placeholder="Ingrese su dirección">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="city">Ciudad</label>
+                                <input type="text" class="form-control" id="city" placeholder="Ingrese su ciudad">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="country">País</label>
+                                <select class="form-control" id="country">
+                                    <option value="">Seleccione un país</option>
+                                    <option value="AR">Argentina</option>
+                                    <option value="BO">Bolivia</option>
+                                    <option value="CL">Chile</option>
+                                    <option value="CO">Colombia</option>
+                                    <option value="CR">Costa Rica</option>
+                                    <option value="CU">Cuba</option>
+                                    <option value="DO">República Dominicana</option>
+                                    <option value="EC">Ecuador</option>
+                                    <option value="SV">El Salvador</option>
+                                    <option value="GT">Guatemala</option>
+                                    <option value="HN">Honduras</option>
+                                    <option value="MX">México</option>
+                                    <option value="NI">Nicaragua</option>
+                                    <option value="PA">Panamá</option>
+                                    <option value="PY">Paraguay</option>
+                                    <option value="PE">Perú</option>
+                                    <option value="PR">Puerto Rico</option>
+                                    <option value="ES">España</option>
+                                    <option value="UY">Uruguay</option>
+                                    <option value="VE">Venezuela</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preferencias -->
+                    <div class="form-group">
+                        <label>Preferencias de Notificación</label>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="emailNotifications" checked>
+                            <label class="form-check-label" for="emailNotifications">Recibir notificaciones por correo electrónico</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="smsNotifications">
+                            <label class="form-check-label" for="smsNotifications">Recibir notificaciones por SMS</label>
+                        </div>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="termsAndConditions" required>
+                        <label class="form-check-label required" for="termsAndConditions">He leído y acepto los <a href="#">términos y condiciones</a> y la <a href="#">política de privacidad</a></label>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" onclick="submitForm(event)">Registrarse</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>© 2025 MiSistema. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Previsualizar la imagen de perfil
+        function previewProfilePicture(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.querySelector('#previewImage').src = e.target.result;
+                    document.querySelector('#previewImage').style.display = 'block';
+                    document.querySelector('.profile-picture-default').style.display = 'none';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Mostrar/ocultar contraseña
+        function togglePassword(id) {
+            const passwordInput = document.getElementById(id);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+
+        // Comprobar la fortaleza de la contraseña
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthMeter = document.getElementById('passwordStrength');
+            const passwordHelp = document.getElementById('passwordHelp');
+            
+            // Eliminamos las clases existentes
+            strengthMeter.classList.remove('weak', 'medium', 'strong');
+            
+            if (password.length === 0) {
+                strengthMeter.style.width = '0%';
+                passwordHelp.textContent = 'La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, un número y un carácter especial.';
+                return;
+            }
+            
+            // Definimos los criterios
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const isLongEnough = password.length >= 8;
+            
+            // Calculamos la puntuación
+            let score = 0;
+            if (hasLowerCase) score++;
+            if (hasUpperCase) score++;
+            if (hasNumber) score++;
+            if (hasSpecialChar) score++;
+            if (isLongEnough) score++;
+            
+            // Establecemos la fortaleza basada en la puntuación
+            if (score <= 2) {
+                strengthMeter.classList.add('weak');
+                passwordHelp.textContent = 'Contraseña débil: Añada mayúsculas, números y caracteres especiales.';
+            } else if (score <= 4) {
+                strengthMeter.classList.add('medium');
+                passwordHelp.textContent = 'Contraseña media: Puede mejorarla.';
+            } else {
+                strengthMeter.classList.add('strong');
+                passwordHelp.textContent = 'Contraseña fuerte: Excelente elección.';
+            }
+        }
+
+        // Reiniciar el formulario
+        function resetForm() {
+            document.getElementById('registrationForm').reset();
+            document.getElementById('passwordStrength').style.width = '0%';
+            document.getElementById('passwordStrength').className = 'password-strength-meter';
+            document.getElementById('passwordHelp').textContent = 'La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, un número y un carácter especial.';
+            document.getElementById('previewImage').style.display = 'none';
+            document.querySelector('.profile-picture-default').style.display = 'block';
+            document.getElementById('alertMessage').style.display = 'none';
+        }
+
+        // Enviar el formulario
+        function submitForm(event) {
+            event.preventDefault();
+            
+            // Validación
+            const form = document.getElementById('registrationForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Comprobación de contraseñas
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showAlert('Las contraseñas no coinciden. Por favor, inténtelo de nuevo.', 'danger');
+                return;
+            }
+            
+            // Verificar los términos y condiciones
+            if (!document.getElementById('termsAndConditions').checked) {
+                showAlert('Debe aceptar los términos y condiciones para continuar.', 'danger');
+                return;
+            }
+            
+            // Aquí iría la lógica para enviar los datos al servidor
+            // Por ahora, mostraremos un mensaje de éxito
+            showAlert('¡Registro completado con éxito! Redirigiendo...', 'success');
+            
+            // Simulamos una redirección después de 3 segundos
+            setTimeout(function() {
+                alert('En un caso real, serías redirigido a la página de inicio de sesión o al panel de usuario.');
+                resetForm();
+            }, 3000);
+        }
+
+        // Mostrar alertas
+        function showAlert(message, type) {
+            const alertElement = document.getElementById('alertMessage');
+            alertElement.className = 'alert alert-' + type;
+            alertElement.textContent = message;
+            alertElement.style.display = 'block';
+            
+            // Desplazarse hasta la alerta
+            alertElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
